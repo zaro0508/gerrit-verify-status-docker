@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+
+  mysql:
+    build: mysql
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - gerrit-net    
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+
+  master:
+    build: master
+    hostname: master
+    ports:
+      - "8080:8080"
+      - "29418:29418"
+    networks:
+      - gerrit-net
+    depends_on:
+      - mysql
+
+networks:
+  gerrit-net:
+    driver: bridge
+
